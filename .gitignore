@@ -1,0 +1,28 @@
+# Build (CMake/Ninja, downloads do FetchContent, binarios)
+/build/
+build/
+
+# Saidas de teste geradas em runtime
+*_out.txt
+*_err.txt
+run_out.txt
+run_err.txt
+
+# Arquivos de IDE / editor
+.vs/
+.vscode/
+.idea/
+*.user
+
+# Sistema operacional
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Binarios soltos
+*.exe
+*.obj
+*.o
+*.a
+*.lib
+*.pdb

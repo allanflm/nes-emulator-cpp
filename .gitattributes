@@ -1,0 +1,7 @@
+# Normaliza quebras de linha: texto em LF no repositorio.
+* text=auto eol=lf
+
+# Arquivos binarios (nao mexer nas quebras de linha).
+*.nes binary
+*.png binary
+*.exe binary
