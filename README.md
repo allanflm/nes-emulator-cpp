@@ -1,11 +1,8 @@
-# engine-cpp
+# nes-emulator-cpp
 
-Projeto de estudo de **gamedev em C++ do zero**, com duas frentes que compartilham a mesma base:
+Um **emulador de NES (Nintendinho) escrito em C++ do zero**, feito de forma incremental e passo a passo — cada parte testada antes de seguir para a próxima.
 
-1. **Engine 2D** (GLFW + OpenGL 3.3) com um **protótipo de jogo de plataforma**.
-2. **Emulador de NES** ("from scratch") que reaproveita a camada de vídeo/input do engine pra rodar ROMs `.nes` reais.
-
-> Feito de forma incremental, passo a passo, com cada parte testada antes de seguir.
+A camada de vídeo/input usa **GLFW + OpenGL 3.3** (em `src/engine/`), que faz o papel da janela, do desenho dos pixels na tela e da leitura do teclado — equivalente à `olcPixelGameEngine` usada na série que inspirou o projeto.
 
 ## Requisitos
 
@@ -22,35 +19,23 @@ cmake -S . -B build -G Ninja
 cmake --build build
 ```
 
-Isso gera dois executáveis em `build/`:
-
-| Executável | O que é |
-|---|---|
-| `engine` | Protótipo de plataforma 2D (anda, pula, colisão AABB) |
-| `nes`    | Emulador de NES |
+Gera o executável `nes` em `build/`.
 
 ## Rodando
 
-**Platformer:**
-```sh
-./build/engine
-```
-Controles: `A`/`D` ou setas = mover · `Espaço`/`W`/`Cima` = pular · `Esc` = sair.
-
-**Emulador — teste da CPU** (valida o 6502 contra um log de referência):
+**Teste da CPU** (valida o 6502 ciclo-a-ciclo contra um log de referência — roda no terminal, sem janela):
 ```sh
 ./build/nes --nestest test/nestest/nestest.nes test/nestest/nestest.log
 ```
 
+**Janela** (por enquanto mostra um padrão de teste de vídeo; a imagem de jogo chega quando a PPU estiver pronta):
+```sh
+./build/nes
+```
+
 ## Estado atual
 
-### Engine 2D
-- [x] Janela + contexto OpenGL 3.3 (GLFW + glad)
-- [x] Renderer de sprites/quads (VAO/VBO, shaders, câmera ortográfica)
-- [x] Input com edge-trigger, loop com timestep fixo
-- [x] Protótipo de plataforma com gravidade e colisão AABB
-
-### Emulador NES
+- [x] **Camada de vídeo/input** — janela OpenGL 3.3, renderer de framebuffer, teclado
 - [x] **CPU 6502** — todos os opcodes oficiais (validados ciclo-a-ciclo com `nestest.log`)
 - [x] **Bus** + mapa de memória da CPU
 - [x] **Cartridge** (formato iNES) + **Mapper 0** (NROM)
@@ -63,11 +48,9 @@ Controles: `A`/`D` ou setas = mover · `Espaço`/`W`/`Cima` = pular · `Esc` = s
 
 ```
 src/
-  engine/     # camada reutilizável: Window, Input, Shader, Texture, SpriteRenderer, ...
-  game/       # protótipo de plataforma 2D
+  engine/     # camada de apresentacao: Window, Input, Shader, Texture, SpriteRenderer, Camera2D, Math
   nes/        # emulador: Bus, Cpu6502, Cartridge, mappers/, (PPU em breve)
-  main.cpp        # entrada do engine (platformer)
-  nes_main.cpp    # entrada do emulador
+  nes_main.cpp    # ponto de entrada
 vendor/       # stb_image.h
 test/         # ROM e log de teste (nestest)
 ```
@@ -75,4 +58,4 @@ test/         # ROM e log de teste (nestest)
 ## Créditos / referências
 
 - Série **"NES Emulator From Scratch"** do **javidx9 (OneLoneCoder)** — inspiração e referência da arquitetura.
-- **nestest** — ROM de teste da CPU 6502 (domínio comum na comunidade de emulação).
+- **nestest** — ROM de teste da CPU 6502 (amplamente usada na comunidade de emulação).

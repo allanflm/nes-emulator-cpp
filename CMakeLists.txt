@@ -33,30 +33,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glad)
 glad_add_library(glad_gl_core_33 STATIC API gl:core=3.3)
 
-# ---- Executavel do engine ----
-add_executable(engine
-    src/main.cpp
-    src/engine/Window.cpp
-    src/engine/Input.cpp
-    src/engine/Shader.cpp
-    src/engine/Texture.cpp
-    src/engine/SpriteRenderer.cpp
-    src/game/Physics.cpp
-    src/game/Game.cpp
-)
-
-target_include_directories(engine PRIVATE
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/vendor
-)
-
-target_link_libraries(engine PRIVATE glfw glad_gl_core_33)
-
-if (WIN32)
-    target_link_libraries(engine PRIVATE opengl32)
-endif()
-
-# ---- Executavel do emulador NES (reusa a camada de video do engine) ----
+# ---- Executavel do emulador NES (usa a camada de video em src/engine) ----
 add_executable(nes
     src/nes_main.cpp
     src/engine/Window.cpp
